@@ -2,9 +2,9 @@
 :root{
 	--bg: #2a2928;
 	--surface: #373634;
-	--muted: #bdbdbd;
-	--accent: #5ec6b6;
-	--accent-2: #3aa0ff;
+	--muted: #e5e5e5;
+	--accent: #862727;
+	--accent-2: #460b0b;
 }
 
 *{box-sizing: border-box}
