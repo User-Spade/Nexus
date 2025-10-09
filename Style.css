@@ -61,11 +61,16 @@ p {color: var(--muted); font-size: 18px; text-align: center;}
 .footer-col ul{list-style:none;padding:0;margin:0}
 .footer-col a{color:var(--muted);text-decoration:none}
 
+.social-links{margin:1px;display:flex;gap:10px;align-items:center}
+.social{color:var(--muted);display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:6px;overflow:hidden}
+.social svg{display:block;width:18px;height:18px}
+.social:hover{color:#fff;background:rgba(255,255,255,0.04)}
+
 /* Quick links (fixed at bottom-right of viewport) */
 .quick-links{position:absolute;right:18px;bottom:18px;z-index:60}
 .quick-links ul{list-style:none;margin:0;padding:6px 10px;background:rgba(0,0,0,0.4);border-radius:999px;display:flex;flex-direction:row;gap:8px;align-items:center}
-.quick-links a{color:var(--muted);text-decoration:none;padding:6px 10px;display:inline-block;border-radius:6px}
-.quick-links a:hover{background:rgba(255,255,255,0.04);color:#fff}
+.quick-links a:not(.social){color:var(--muted);text-decoration:none;padding:6px 10px;display:inline-block;border-radius:6px}
+.quick-links a:not(.social):hover{background:rgba(255,255,255,0.04);color:#fff}
 
 @media (max-width:480px){
 	/* hide quick links on very small screens to avoid overlap */
