@@ -34,6 +34,7 @@ p {color: var(--muted); font-size: 18px; text-align: center;}
 	min-height: 85vh;
 	display:flex;
 	align-items:center; /* vertical centering */
+	position: relative; /* allow absolutely-positioned children (quick-links) to sit inside hero */
 }
 .hero-inner{display:flex;gap:40px;align-items:center}
 .hero-copy{flex:1}
@@ -60,14 +61,29 @@ p {color: var(--muted); font-size: 18px; text-align: center;}
 .footer-col ul{list-style:none;padding:0;margin:0}
 .footer-col a{color:var(--muted);text-decoration:none}
 
+/* Quick links (fixed at bottom-right of viewport) */
+.quick-links{position:absolute;right:18px;bottom:18px;z-index:60}
+.quick-links ul{list-style:none;margin:0;padding:6px 10px;background:rgba(0,0,0,0.4);border-radius:999px;display:flex;flex-direction:row;gap:8px;align-items:center}
+.quick-links a{color:var(--muted);text-decoration:none;padding:6px 10px;display:inline-block;border-radius:6px}
+.quick-links a:hover{background:rgba(255,255,255,0.04);color:#fff}
+
+@media (max-width:480px){
+	/* hide quick links on very small screens to avoid overlap */
+	.quick-links{display:none}
+}
+
 /* Responsive */
 @media (max-width:900px){
 	.features-grid{grid-template-columns:repeat(2,1fr)}
 	.hero-inner{flex-direction:column;text-align:center}
 	.hero-copy p{text-align:center}
+	/* center action buttons when hero stacks */
+	.hero-actions{justify-content:center;flex-wrap:wrap}
 	.footer-inner{flex-direction:column;align-items:center;text-align:center}
 }
 @media (max-width:480px){
 	.features-grid{grid-template-columns:1fr}
 	.nav ul{display:none}
+	.hero-actions{gap:10px}
+	.hero-actions .btn{min-width:140px;text-align:center}
 }
