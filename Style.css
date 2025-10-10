@@ -1,70 +1,6 @@
-/* Base styles */
 :root{
-	--bg: #2a2928;
-	--surface: #373634;
 	--muted: #e5e5e5;
-	--accent: #862727;
-	--accent-2: #460b0b;
 }
-
-*{box-sizing: border-box}
-body {
-	background-color: var(--bg);
-	margin: 0;
-	font-family: Arial, Helvetica, sans-serif;
-	color: #fff;
-}
-
-p {color: var(--muted); font-size: 18px; text-align: center;}
-
-.container{max-width:1100px;margin:0 auto;padding:0 20px}
-
-/* Header */
-.site-header{background: transparent;padding:20px 0}
-.header-inner{display:flex;align-items:center;justify-content:space-between}
-.logo{margin:0;font-size:1.25rem;color:var(--accent)}
-.nav ul{list-style:none;margin:0;padding:0;display:flex;gap:1rem}
-.nav a{color:var(--muted);text-decoration:none}
-.btn{display:inline-block;padding:8px 14px;border-radius:50px;text-decoration:none;font-weight:600}
-.btn-cta{background:var(--accent);color:#042322}
-
-.hero{padding:60px 0}
-.hero{
-	/* make hero take most of the first viewport to reduce clutter */
-	min-height: 85vh;
-	display:flex;
-	align-items:center; /* vertical centering */
-	position: relative; /* allow absolutely-positioned children (quick-links) to sit inside hero */
-}
-.hero-inner{display:flex;gap:40px;align-items:center}
-.hero-copy{flex:1}
-.hero-copy h2{font-size:2rem;margin:0 0 10px}
-.hero-copy p{font-size:1.05rem;color:var(--muted);text-align:left}
-.hero-actions{margin-top:16px;display:flex;gap:12px}
-.btn-primary{background:var(--accent-2);color:#fff}
-.btn-outline{background:transparent;border:1px solid rgba(255,255,255,0.12);color:var(--muted)}
-.hero-illustration{width:320px;height:200px;display:flex;align-items:center;justify-content:center}
-.placeholder-illustration{width:100%;height:100%;background:linear-gradient(135deg,#3b3a39,#262525);display:flex;align-items:center;justify-content:center;color:var(--muted);border-radius:8px}
-
-/* Features */
-.features{padding:60px 0 80px 0; /* add extra top/bottom spacing so features sit lower */}
-.section-title{text-align:center;margin:0 0 24px;font-size:1.25rem;color:var(--accent)}
-.features-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.feature-card{background:var(--surface);padding:18px;border-radius:8px}
-.feature-card h4{margin:0 0 8px}
-.feature-card p{margin:0;color:var(--muted);font-size:0.95rem}
-
-/* Footer */
-.site-footer{border-top:1px solid rgba(255,255,255,0.04);padding:24px 0;margin-top:40px}
-.footer-inner{display:flex;gap:20px;justify-content:space-between}
-.footer-col h5,.footer-col h4{margin:0 0 8px}
-.footer-col ul{list-style:none;padding:0;margin:0}
-.footer-col a{color:var(--muted);text-decoration:none}
-
-.social-links{margin:1px;display:flex;gap:10px;align-items:center}
-.social{color:var(--muted);display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:6px;overflow:hidden}
-.social svg{display:block;width:18px;height:18px}
-.social:hover{color:#fff;background:rgba(255,255,255,0.04)}
 
 /* Quick links (fixed at bottom-right of viewport) */
 .quick-links{position:absolute;right:18px;bottom:18px;z-index:60}
@@ -72,23 +8,12 @@ p {color: var(--muted); font-size: 18px; text-align: center;}
 .quick-links a:not(.social){color:var(--muted);text-decoration:none;padding:6px 10px;display:inline-block;border-radius:6px}
 .quick-links a:not(.social):hover{background:rgba(255,255,255,0.04);color:#fff}
 
+.social-links{margin:1px;display:flex;gap:10px;align-items:center}
+.social{color:var(--muted);display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:6px;overflow:hidden}
+.social svg{display:block;width:18px;height:18px}
+.social:hover{color:#fff;background:rgba(255,255,255,0.04)}
+
 @media (max-width:480px){
 	/* hide quick links on very small screens to avoid overlap */
 	.quick-links{display:none}
-}
-
-/* Responsive */
-@media (max-width:900px){
-	.features-grid{grid-template-columns:repeat(2,1fr)}
-	.hero-inner{flex-direction:column;text-align:center}
-	.hero-copy p{text-align:center}
-	/* center action buttons when hero stacks */
-	.hero-actions{justify-content:center;flex-wrap:wrap}
-	.footer-inner{flex-direction:column;align-items:center;text-align:center}
-}
-@media (max-width:480px){
-	.features-grid{grid-template-columns:1fr}
-	.nav ul{display:none}
-	.hero-actions{gap:10px}
-	.hero-actions .btn{min-width:140px;text-align:center}
 }
