@@ -1,19 +1,69 @@
-:root{
-	--muted: #e5e5e5;
+/* Entrance scene styles */
+:root {
+    --muted: #e5e5e5;
+    --candle-yellow: #ffe066;
+    --bg-dark: #181818;
 }
-
-/* Quick links (fixed at bottom-right of viewport) */
+body {
+    background: #181818;
+    margin: 0;
+    overflow: hidden;
+}
+.entrance-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 10;
+}
+.identity {
+    text-align: center;
+    margin-bottom: 40px;
+}
+.name {
+    font-size: 2.2rem;
+    color: #fff;
+    text-shadow: 0 0 18px var(--candle-yellow), 0 0 2px #fff;
+    margin: 0 0 8px 0;
+}
+.role {
+    font-size: 1.3rem;
+    color: var(--muted);
+    text-shadow: 0 0 8px var(--candle-yellow);
+    margin: 0 0 12px 0;
+}
+.tagline {
+    font-size: 1.1rem;
+    color: var(--muted);
+    font-style: italic;
+    text-shadow: 0 0 6px var(--candle-yellow);
+    margin: 0;
+}
+canvas#revealCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    background: #181818;
+    pointer-events: auto;
+}
 .quick-links{position:absolute;right:18px;bottom:18px;z-index:60}
 .quick-links ul{list-style:none;margin:0;padding:6px 10px;background:rgba(0,0,0,0.4);border-radius:999px;display:flex;flex-direction:row;gap:8px;align-items:center}
 .quick-links a:not(.social){color:var(--muted);text-decoration:none;padding:6px 10px;display:inline-block;border-radius:6px}
 .quick-links a:not(.social):hover{background:rgba(255,255,255,0.04);color:#fff}
-
 .social-links{margin:1px;display:flex;gap:10px;align-items:center}
 .social{color:var(--muted);display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:6px;overflow:hidden}
 .social svg{display:block;width:18px;height:18px}
 .social:hover{color:#fff;background:rgba(255,255,255,0.04)}
-
 @media (max-width:480px){
-	/* hide quick links on very small screens to avoid overlap */
-	.quick-links{display:none}
+    .entrance-container { padding: 0 10px; }
+    .name { font-size: 1.3rem; }
+    .role { font-size: 1rem; }
+    .tagline { font-size: 0.9rem; }
+    .quick-links{display:none}
 }
