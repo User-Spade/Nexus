@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Spark</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="Style.css">
+    
 </head>
-<body style="margin:0; overflow:hidden;">
+<body>
     <canvas id="revealCanvas"></canvas>
     <div class="entrance-container">
         <div class="identity" id="identity">
-            <h1 class="name">Your Name</h1>
-            <h2 class="role">Your Role</h2>
+            <h1 class="name">Spade</h1>
+            <h2 class="role">Engineer of God</h2>
             <p class="tagline">In the dark, creation begins with a spark.</p>
         </div>
         <nav class="quick-links" aria-label="Quick links">
@@ -41,55 +43,6 @@
             </ul>
         </nav>
     </div>
-    <script>
-        // Mouse reveal effect with quadrant tracking
-        const canvas = document.getElementById('revealCanvas');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        const ctx = canvas.getContext('2d');
-        let revealedQuadrants = [false, false, false, false];
-        function fillDark() {
-            ctx.globalCompositeOperation = 'source-over';
-            ctx.fillStyle = '#000';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-        }
-        function getQuadrant(x, y) {
-            const midX = window.innerWidth / 2;
-            const midY = window.innerHeight / 2;
-            if (x < midX && y < midY) return 0; // Top-left
-            if (x >= midX && y < midY) return 1; // Top-right
-            if (x < midX && y >= midY) return 2; // Bottom-left
-            return 3; // Bottom-right
-        }
-        function reveal(e) {
-            fillDark();
-            ctx.save();
-            ctx.globalCompositeOperation = 'destination-out';
-            const gradient = ctx.createRadialGradient(e.clientX, e.clientY, 60, e.clientX, e.clientY, 120);
-            gradient.addColorStop(0, 'rgba(0,0,0,1)');
-            gradient.addColorStop(0.7, 'rgba(0,0,0,0.3)');
-            gradient.addColorStop(1, 'rgba(0,0,0,0)');
-            ctx.fillStyle = gradient;
-            ctx.beginPath();
-            ctx.arc(e.clientX, e.clientY, 120, 0, 2 * Math.PI);
-            ctx.fill();
-            ctx.restore();
-            // Track quadrant
-            const q = getQuadrant(e.clientX, e.clientY);
-            revealedQuadrants[q] = true;
-            if (revealedQuadrants.every(Boolean)) {
-                // Reveal whole page
-                canvas.style.display = 'none';
-                document.removeEventListener('mousemove', reveal);
-            }
-        }
-        fillDark();
-        document.addEventListener('mousemove', reveal);
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            fillDark();
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
