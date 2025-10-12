@@ -8,6 +8,8 @@
 
   // Main setup function: initializes canvas and event listeners
   function setup() {
+    // Hide content until the dark layer is painted to avoid flash
+    document.body.classList.add('no-entrance-ready');
     // Set canvas size to fill the window
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -52,15 +54,36 @@
       // Mark the current quadrant as revealed
       const q = getQuadrant(e.clientX, e.clientY);
       revealedQuadrants[q] = true;
-      // If all quadrants have been visited, remove the overlay and stop listening for mouse movement
+      // If all quadrants have been visited, remove the overlay and stop listening for events
       if (revealedQuadrants.every(Boolean)) {
         canvas.style.display = 'none'; // Fully reveal the page
         document.removeEventListener('mousemove', reveal);
+        document.removeEventListener('touchmove', handleReveal);
+        document.removeEventListener('touchstart', handleReveal);
       }
     }
 
-    fillDark(); // Start with a fully dark screen
+    // Helper function to get coordinates from touch or mouse events
+    function getEventCoords(e) {
+      if (e.touches && e.touches[0]) {
+        return { clientX: e.touches[0].clientX, clientY: e.touches[0].clientY };
+      }
+      return { clientX: e.clientX, clientY: e.clientY };
+    }
+
+    // Wrapper function to handle both mouse and touch events
+    function handleReveal(e) {
+      e.preventDefault(); // Prevent scrolling on touch devices
+      const coords = getEventCoords(e);
+      reveal(coords);
+    }
+
+  fillDark(); // Start with a fully dark screen
+  // Now that the overlay is drawn, show the content beneath
+  document.body.classList.remove('no-entrance-ready');
     document.addEventListener('mousemove', reveal); // Reveal as mouse moves
+    document.addEventListener('touchmove', handleReveal); // Reveal as finger moves (mobile)
+    document.addEventListener('touchstart', handleReveal); // Reveal on initial touch
 
     // Re-size the canvas and re-fill dark when the window size changes
     window.addEventListener('resize', () => {

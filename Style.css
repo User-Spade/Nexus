@@ -61,17 +61,21 @@ body {
     margin: 0;
 }
 
-/* Canvas overlay for entrance effect */
+/* Canvas overlay for entrance effect - sits ABOVE content; transparent holes reveal text underneath */
 canvas#revealCanvas {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 999;
-    background: var(--bg-dark);
-    /* pointer-events: none allows interaction with content below the canvas */
-    pointer-events: auto; /* Change to 'none' if you want mouse events to pass through */
+    z-index: 1000; /* Above the content container (which is z-index: 10) */
+    background: transparent; /* Transparent so cleared areas reveal content below */
+    pointer-events: none; /* Allow interactions with content below the canvas */
+}
+
+/* Prevent initial flash of content before JS paints the overlay */
+body.no-entrance-ready .entrance-container {
+    visibility: hidden;
 }
 
 /* Quick links navigation (bottom right corner) */
