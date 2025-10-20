@@ -63,8 +63,8 @@
       fillDark();
       ctx.save();
       ctx.globalCompositeOperation = 'destination-out';
-      const inner = 60; // solid center radius
-      const outer = inner + 120; // soft edge
+      const inner = 20; // solid center radius
+      const outer = inner + 80; // soft edge
       const g = ctx.createRadialGradient(pointer.x, pointer.y, inner, pointer.x, pointer.y, outer);
       g.addColorStop(0, 'rgba(0,0,0,1)');
       g.addColorStop(0.75, 'rgba(0,0,0,0.3)');
