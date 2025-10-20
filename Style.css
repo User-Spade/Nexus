@@ -9,6 +9,13 @@
     --muted: #e5e5e5;           /* Muted text color */
     --candle-yellow: #ffe066;   /* Candle glow accent */
     --bg-dark: #181818;         /* Main dark background */
+    /* Entrance animation controls */
+    --reveal-speed-min: 420;      /* px/sec, minimum expansion speed */
+    --reveal-speed-max: 1100;     /* px/sec, maximum expansion speed */
+    --reveal-wobble-freq: 0.9;    /* Hz, how often speed oscillates */
+    --reveal-wobble-amp: 0.7;     /* 0–1, amount of oscillation */
+    --reveal-fade-ms: 650ms;      /* Fade-out time for overlay when finished */
+    --reveal-softness: 140px;     /* Feather between solid center and outer edge */
 }
 
 /* Set up the dark background and remove scrollbars */
@@ -71,6 +78,8 @@ canvas#revealCanvas {
     z-index: 1000; /* Above the content container (which is z-index: 10) */
     background: transparent; /* Transparent so cleared areas reveal content below */
     pointer-events: none; /* Allow interactions with content below the canvas */
+    opacity: 1;
+    transition: opacity var(--reveal-fade-ms) ease-out;
 }
 
 /* Prevent initial flash of content before JS paints the overlay */
@@ -142,4 +151,12 @@ body.no-entrance-ready .entrance-container {
     .role { font-size: 1rem; }
     .tagline { font-size: 0.9rem; }
     .quick-links { display: none; }
+}
+
+/* Respect reduced motion preferences: minimize oscillation and speed up fade */
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --reveal-wobble-amp: 0;
+        --reveal-fade-ms: 300ms;
+    }
 }
