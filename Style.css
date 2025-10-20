@@ -12,7 +12,7 @@
     /* Entrance animation controls */
         --reveal-speed-min: 140;      /* px/sec, minimum expansion speed (less jump) */
         --reveal-speed-max: 160;      /* px/sec, maximum expansion speed (less jump) */
-        --reveal-wobble-freq: 2.0;    /* Hz, more frequent oscillations */
+        --reveal-wobble-freq: 1.6;    /* Hz, more frequent oscillations */
         --reveal-wobble-amp: 0.9;     /* 0–1, slightly more pronounced oscillation */
     --reveal-fade-ms: 650ms;      /* Fade-out time for overlay when finished */
     --reveal-softness: 140px;     /* Feather between solid center and outer edge */
