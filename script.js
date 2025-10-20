@@ -35,11 +35,12 @@
       const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
       return v || fallback;
     };
-    const SPEED_MIN = parseFloat(cssVar('--reveal-speed-min', '420')) || 420; // px/sec
-    const SPEED_MAX = parseFloat(cssVar('--reveal-speed-max', '1100')) || 1100; // px/sec
-    const WOBBLE_FREQ = parseFloat(cssVar('--reveal-wobble-freq', '0.9')) || 0.9; // Hz
-    const WOBBLE_AMP = Math.min(1, Math.max(0, parseFloat(cssVar('--reveal-wobble-amp', '0.7')) || 0.7));
-    const SOFT = parseFloat(cssVar('--reveal-softness', '140')) || 140; // px
+  const SPEED_MIN = parseFloat(cssVar('--reveal-speed-min', '420')) || 420; // px/sec
+  const SPEED_MAX = parseFloat(cssVar('--reveal-speed-max', '1100')) || 1100; // px/sec
+  const WOBBLE_FREQ = parseFloat(cssVar('--reveal-wobble-freq', '0.9')) || 0.9; // Hz
+  const WOBBLE_AMP = Math.min(1, Math.max(0, parseFloat(cssVar('--reveal-wobble-amp', '0.7')) || 0.7));
+  const SOFT = parseFloat(cssVar('--reveal-softness', '140')) || 140; // px
+  const SHRINK_AMP = Math.min(1, Math.max(0, parseFloat(cssVar('--reveal-shrink-amp', '0.13')) || 0.13));
 
     // Fill the entire canvas with solid black
     function fillDark() {
@@ -59,19 +60,19 @@
     }
 
     // Draw flashlight (small reveal) around the pointer
+    const FLASHLIGHT_INNER = 20; // solid center radius
+    const FLASHLIGHT_OUTER = FLASHLIGHT_INNER + 80; // soft edge
     function drawFlashlight() {
       fillDark();
       ctx.save();
       ctx.globalCompositeOperation = 'destination-out';
-      const inner = 20; // solid center radius
-      const outer = inner + 80; // soft edge
-      const g = ctx.createRadialGradient(pointer.x, pointer.y, inner, pointer.x, pointer.y, outer);
+      const g = ctx.createRadialGradient(pointer.x, pointer.y, FLASHLIGHT_INNER, pointer.x, pointer.y, FLASHLIGHT_OUTER);
       g.addColorStop(0, 'rgba(0,0,0,1)');
       g.addColorStop(0.75, 'rgba(0,0,0,0.3)');
       g.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = g;
       ctx.beginPath();
-      ctx.arc(pointer.x, pointer.y, outer, 0, Math.PI * 2);
+      ctx.arc(pointer.x, pointer.y, FLASHLIGHT_OUTER, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
     }
@@ -126,8 +127,8 @@
       // If all quadrants visited, switch to expanding phase
       if (phase === 'flashlight' && revealedQuadrants.every(Boolean)) {
         phase = 'expanding';
-        // initialize radius small but non-zero for smoothness
-        radius = 80;
+        // initialize radius to flashlight outer radius for smoothness
+        radius = FLASHLIGHT_OUTER;
       }
     }
 
@@ -156,7 +157,12 @@
         const wobble = Math.sin(2 * Math.PI * WOBBLE_FREQ * t) * WOBBLE_AMP; // -amp..amp scaled later
         const speed = mid + amp * wobble; // px/sec
         radius += speed * dt;
-        drawExpanding(radius);
+
+  // Shrinking effect: modulate radius with a secondary sine wave
+  const shrink = 1 - (Math.sin(2 * Math.PI * (WOBBLE_FREQ * 0.7) * t + Math.PI / 2) * SHRINK_AMP);
+  // Clamp so radius never shrinks below starting value
+  const modulatedRadius = Math.max(radius * shrink, FLASHLIGHT_OUTER);
+  drawExpanding(modulatedRadius);
 
         const needed = maxCoverRadius(pointer.x, pointer.y);
         if (radius >= needed) {

@@ -10,12 +10,13 @@
     --candle-yellow: #ffe066;   /* Candle glow accent */
     --bg-dark: #181818;         /* Main dark background */
     /* Entrance animation controls */
-    --reveal-speed-min: 420;      /* px/sec, minimum expansion speed */
-    --reveal-speed-max: 1100;     /* px/sec, maximum expansion speed */
-    --reveal-wobble-freq: 0.9;    /* Hz, how often speed oscillates */
-    --reveal-wobble-amp: 0.7;     /* 0–1, amount of oscillation */
+        --reveal-speed-min: 140;      /* px/sec, minimum expansion speed (less jump) */
+        --reveal-speed-max: 160;      /* px/sec, maximum expansion speed (less jump) */
+        --reveal-wobble-freq: 2.0;    /* Hz, more frequent oscillations */
+        --reveal-wobble-amp: 0.9;     /* 0–1, slightly more pronounced oscillation */
     --reveal-fade-ms: 650ms;      /* Fade-out time for overlay when finished */
     --reveal-softness: 140px;     /* Feather between solid center and outer edge */
+    --reveal-shrink-amp: 0.1;    /* 0–1, how much the radius can shrink (fraction of current radius) */
 }
 
 /* Set up the dark background and remove scrollbars */
