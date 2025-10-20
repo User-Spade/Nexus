@@ -1,6 +1,6 @@
 ---
 description: 'The point of this chat mode is for when I have a feature that does not work as intended.I would like it to understand how to process my requests and reach a solution the matches what I invision.'
-tools: ['search/codebase','fetch','search','githubrepo']
+tools: []
 ---
 
 #Identifing what I want
