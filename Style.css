@@ -94,62 +94,7 @@ body.no-entrance-ready .entrance-container {
     visibility: hidden;
 }
 
-/* Quick links navigation (bottom right corner) */
-.quick-links {
-    position: absolute;
-    right: 18px;
-    bottom: 18px;
-    z-index: 60;
-}
-.quick-links ul {
-    list-style: none;
-    margin: 0;
-    padding: 6px 10px;
-    background: rgba(0,0,0,0.4);
-    border-radius: 999px;
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-    align-items: center;
-}
-.quick-links a:not(.social) {
-    color: var(--muted);
-    text-decoration: none;
-    padding: 6px 10px;
-    display: inline-block;
-    border-radius: 6px;
-}
-.quick-links a:not(.social):hover {
-    background: rgba(255,255,255,0.04);
-    color: #fff;
-}
 
-/* Social media icon links */
-.social-links {
-    margin: 1px;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-.social {
-    color: var(--muted);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 6px;
-    overflow: hidden;
-}
-.social svg {
-    display: block;
-    width: 18px;
-    height: 18px;
-}
-.social:hover {
-    color: #fff;
-    background: rgba(255,255,255,0.04);
-}
 
 /* Responsive adjustments for mobile screens */
 @media (max-width:480px) {
@@ -157,7 +102,6 @@ body.no-entrance-ready .entrance-container {
     .name { font-size: 1.3rem; }
     .role { font-size: 1rem; }
     .tagline { font-size: 0.9rem; }
-    .quick-links { display: none; }
 }
 
 /* Respect reduced motion preferences: minimize oscillation and speed up fade */
