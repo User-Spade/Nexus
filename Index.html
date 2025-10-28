@@ -13,13 +13,20 @@
     <!-- Canvas for the dark entrance effect. The reveal logic is handled in script.js -->
     <canvas id="revealCanvas"></canvas>
 
-    <!-- Main container for entrance content -->
-    <div class="entrance-container">
-        <!-- Identity section: Spade Symbol -->
-        <div class="identity" id="identity">
-            <h1 class="name">&#9824;</h1>
+    <!-- Horizontal scroller wrapper: creates a corridor to the RIGHT only -->
+    <div id="hscroll" class="hscroll">
+        <!-- Track sets the total horizontal width (configured via CSS variable) -->
+        <div class="htrack">
+            <!-- Main container for entrance content (left-most panel) -->
+            <div class="entrance-container">
+                <!-- Identity section: Spade Symbol -->
+                <div class="identity" id="identity">
+                    <h1 class="name">&#9824;</h1>
+                </div>
+            </div>
+            <!-- Spacer panel extends the page to the right; intentionally empty for corridor feel -->
+            <div class="corridor-spacer" aria-hidden="true"></div>
         </div>
-        
     </div>
 
     <!-- Main script for entrance effect and reveal logic -->

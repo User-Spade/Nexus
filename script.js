@@ -18,6 +18,8 @@
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     const ctx = canvas.getContext('2d');
+  // Reference to the horizontal scroller element; we will map wheel to horizontal movement
+  const scroller = document.getElementById('hscroll');
 
     // Track which quadrants have been revealed (top-left, top-right, bottom-left, bottom-right)
     let revealedQuadrants = [false, false, false, false];
@@ -208,6 +210,66 @@
     document.addEventListener('mousemove', onPointerMove, { passive: false });
     document.addEventListener('touchmove', onPointerMove, { passive: false });
     document.addEventListener('touchstart', onPointerStart, { passive: true });
+
+    // Map vertical wheel to horizontal corridor scroll so down => move right, up => move left
+    // This keeps the experience like walking a corridor left/right while using the mouse wheel
+    if (scroller) {
+      scroller.addEventListener('wheel', (e) => {
+        e.preventDefault(); // Prevent default vertical scrolling
+        // Use the vertical delta to drive horizontal position; positive deltaY scrolls right
+        scroller.scrollLeft += e.deltaY;
+      }, { passive: false });
+    }
+
+    // Keyboard navigation: map vertical-style keys to horizontal corridor scroll
+    // - ArrowRight/ArrowLeft: nudge by ~20% viewport width
+    // - PageDown/PageUp/Space: jump by ~90% viewport width
+    // - Home/End: go to far left/right
+    function onKeydown(e) {
+      if (!scroller) return; // No horizontal scroller present
+      // Don't hijack typing or editable elements
+      const t = e.target;
+      const tag = t && t.tagName ? t.tagName.toLowerCase() : '';
+      const isEditable = (t && (t.isContentEditable || tag === 'input' || tag === 'textarea' || tag === 'select'));
+      if (isEditable) return;
+
+      const vw = window.innerWidth;
+      const smallStep = Math.round(vw * 0.2);  // 20% viewport width
+      const bigStep = Math.round(vw * 0.9);    // 90% viewport width
+      let handled = true;
+
+      // Ensure content is visible on first keyboard interaction
+      if (typeof showContentIfNeeded === 'function') showContentIfNeeded();
+
+      switch (e.key) {
+        case 'ArrowRight':
+          scroller.scrollTo({ left: scroller.scrollLeft + smallStep, behavior: 'smooth' });
+          break;
+        case 'ArrowLeft':
+          scroller.scrollTo({ left: scroller.scrollLeft - smallStep, behavior: 'smooth' });
+          break;
+        case 'PageDown':
+        case ' ': // Space acts like PageDown
+          scroller.scrollTo({ left: scroller.scrollLeft + bigStep, behavior: 'smooth' });
+          break;
+        case 'PageUp':
+          scroller.scrollTo({ left: scroller.scrollLeft - bigStep, behavior: 'smooth' });
+          break;
+        case 'Home':
+          scroller.scrollTo({ left: 0, behavior: 'smooth' });
+          break;
+        case 'End':
+          scroller.scrollTo({ left: scroller.scrollWidth - scroller.clientWidth, behavior: 'smooth' });
+          break;
+        default:
+          handled = false;
+      }
+
+      if (handled) {
+        e.preventDefault(); // Prevent default vertical scroll/space actions
+      }
+    }
+    document.addEventListener('keydown', onKeydown);
 
     // Kick off RAF loop
     requestAnimationFrame(tick);

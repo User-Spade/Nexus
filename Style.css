@@ -9,6 +9,7 @@
     --muted: #e5e5e5;           /* Muted text color */
     --candle-yellow: #ffe066;   /* Candle glow accent */
     --bg-dark: #181818;         /* Main dark background */
+    --corridor-width: 300vw;    /* Total horizontal width: 100vw (panel) + extra to the right */
     /* Entrance animation controls */
         --reveal-speed-min: 140;      /* px/sec, minimum expansion speed (less jump) */
         --reveal-speed-max: 160;      /* px/sec, maximum expansion speed (less jump) */
@@ -24,6 +25,32 @@ body {
     background: var(--bg-dark);
     margin: 0;
     overflow: hidden;
+}
+
+/* Horizontal corridor scaffolding */
+/* hscroll: the viewport-sized scroller element; we map vertical wheel to its horizontal scrollLeft in JS */
+.hscroll {
+    width: 100vw;            /* Match the viewport width */
+    height: 100vh;           /* Match the viewport height */
+    overflow-x: auto;        /* Allow horizontal scrolling (we hide the scrollbar below) */
+    overflow-y: hidden;      /* No vertical scrolling within the scroller */
+    position: relative;
+    z-index: 5;              /* Below the fixed overlay canvas (which is z-index: 1000) */
+    -ms-overflow-style: none;       /* Hide scrollbar (IE/Edge) */
+    scrollbar-width: none;          /* Hide scrollbar (Firefox) */
+}
+.hscroll::-webkit-scrollbar { display: none; } /* Hide scrollbar (WebKit) */
+
+/* htrack: sets the total width of the horizontal corridor */
+.htrack {
+    width: var(--corridor-width);
+    height: 100%;
+    display: flex;           /* Lay out panels horizontally */
+}
+
+/* Spacer panel: extends the corridor to the right; kept empty on purpose */
+.corridor-spacer {
+    flex: 1 0 auto;          /* Occupies the remaining width after the first panel */
 }
 
 /* Center entrance content vertically and horizontally */
