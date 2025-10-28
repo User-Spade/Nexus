@@ -19,9 +19,9 @@
     --reveal-softness: 140px;     /* Feather between solid center and outer edge */
     --reveal-shrink-amp: 0.1;    /* 0–1, how much the radius can shrink (fraction of current radius) */
         /* Horizontal corridor scroll tuning */
-        --hscroll-sensitivity: 0.1;  /* Multiplier for mouse wheel delta -> pixels (lower = smoother, smaller steps) */
-        --hscroll-spring: 0.8;       /* 0–1, how strongly we move toward the target each frame */
-        --hscroll-damping: 0.88;      /* 0–1, velocity damping per frame (higher = more damped/smoother) */
+        --hscroll-sensitivity: 0.2;  /* Multiplier for mouse wheel delta -> pixels (lower = smoother, smaller steps) */
+        --hscroll-spring: 0;       /* 0–1, how strongly we move toward the target each frame */
+        --hscroll-damping: 0.66;      /* 0–1, velocity damping per frame (higher = more damped/smoother) */
 }
 
 /* Set up the dark background and remove scrollbars */
