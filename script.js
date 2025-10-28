@@ -129,6 +129,9 @@
         phase = 'expanding';
         // initialize radius to flashlight outer radius for smoothness
         radius = FLASHLIGHT_OUTER;
+        // Fade out the spade symbol
+        const identity = document.getElementById('identity');
+        if (identity) identity.classList.add('fade-out');
       }
     }
 
