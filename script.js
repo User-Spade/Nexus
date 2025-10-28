@@ -20,6 +20,10 @@
     const ctx = canvas.getContext('2d');
   // Reference to the horizontal scroller element; we will map wheel to horizontal movement
   const scroller = document.getElementById('hscroll');
+  // Smooth horizontal scrolling state
+  let hTarget = scroller ? scroller.scrollLeft : 0; // desired scrollLeft
+  let hVel = 0;                                     // current horizontal velocity
+  let hAnimId = null;                               // RAF id for smoothing loop
 
     // Track which quadrants have been revealed (top-left, top-right, bottom-left, bottom-right)
     let revealedQuadrants = [false, false, false, false];
@@ -43,6 +47,42 @@
   const WOBBLE_AMP = Math.min(1, Math.max(0, parseFloat(cssVar('--reveal-wobble-amp', '0.7')) || 0.7));
   const SOFT = parseFloat(cssVar('--reveal-softness', '140')) || 140; // px
   const SHRINK_AMP = Math.min(1, Math.max(0, parseFloat(cssVar('--reveal-shrink-amp', '0.13')) || 0.13));
+  // Horizontal scroll tuning from CSS variables
+  const HSENS = Math.max(0, parseFloat(cssVar('--hscroll-sensitivity', '0.45')) || 0.45);
+  const HSPRING = Math.min(1, Math.max(0, parseFloat(cssVar('--hscroll-spring', '0.14')) || 0.14));
+  const HDAMP = Math.min(0.999, Math.max(0, parseFloat(cssVar('--hscroll-damping', '0.88')) || 0.88));
+
+  // Helper: start or continue smooth horizontal scrolling toward hTarget
+  function startHScroll() {
+    if (!scroller) return;
+    if (hAnimId) return; // already animating
+    let last = performance.now();
+    const step = (ts) => {
+      const dt = Math.min(0.05, (ts - last) / 1000) || 0.016;
+      last = ts;
+      // Spring towards target
+      const x = scroller.scrollLeft;
+      const dx = hTarget - x;
+      hVel += dx * HSPRING;      // accelerate towards target
+      hVel *= HDAMP;             // apply damping
+      // Integrate position
+      let next = x + hVel * (dt * 60); // scale by 60fps to keep tuning intuitive
+      // Clamp to bounds
+      const maxLeft = scroller.scrollWidth - scroller.clientWidth;
+      if (next < 0) { next = 0; hVel = 0; }
+      if (next > maxLeft) { next = maxLeft; hVel = 0; }
+      scroller.scrollLeft = next;
+
+      // Stop when close enough and velocity tiny
+      if (Math.abs(dx) < 0.5 && Math.abs(hVel) < 0.2) {
+        scroller.scrollLeft = hTarget;
+        hAnimId = null;
+        return;
+      }
+      hAnimId = requestAnimationFrame(step);
+    };
+    hAnimId = requestAnimationFrame(step);
+  }
 
     // Fill the entire canvas with solid black
     function fillDark() {
@@ -216,8 +256,19 @@
     if (scroller) {
       scroller.addEventListener('wheel', (e) => {
         e.preventDefault(); // Prevent default vertical scrolling
-        // Use the vertical delta to drive horizontal position; positive deltaY scrolls right
-        scroller.scrollLeft += e.deltaY;
+        // Normalize wheel delta across deltaMode types
+        const mode = e.deltaMode; // 0=pixel, 1=line, 2=page
+        let base = e.deltaY;
+        if (mode === 1) base *= 16;          // approx line height
+        else if (mode === 2) base *= window.innerHeight;
+        // Update target using sensitivity
+        hTarget += base * HSENS;
+        // Clamp target to bounds
+        const maxLeft = scroller.scrollWidth - scroller.clientWidth;
+        if (hTarget < 0) hTarget = 0;
+        if (hTarget > maxLeft) hTarget = maxLeft;
+        // Start/continue smoothing animation
+        startHScroll();
       }, { passive: false });
     }
 
