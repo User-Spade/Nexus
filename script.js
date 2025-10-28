@@ -137,10 +137,14 @@
 
     function onPointerMove(e) {
       e.preventDefault();
+      // On first interaction, reveal the content beneath the overlay
+      if (typeof showContentIfNeeded === 'function') showContentIfNeeded();
       updatePointerFromEvent(e);
     }
 
     function onPointerStart(e) {
+      // On first interaction, reveal the content beneath the overlay
+      if (typeof showContentIfNeeded === 'function') showContentIfNeeded();
       updatePointerFromEvent(e);
     }
 
@@ -151,7 +155,13 @@
       lastTs = ts;
 
       if (phase === 'flashlight') {
-        drawFlashlight();
+        // On initial load (no interaction yet), keep the screen fully dark.
+        // Only draw the flashlight after the user has moved/touched once.
+        if (pointer.hasMoved) {
+          drawFlashlight();
+        } else {
+          fillDark();
+        }
       } else if (phase === 'expanding') {
         // Sine-based wobble between min and max speeds
         const t = ts / 1000;
@@ -185,8 +195,14 @@
     }
 
     fillDark(); // Start with a fully dark screen
-    // Now that the overlay is drawn, show the content beneath
-    document.body.classList.remove('no-entrance-ready');
+    // Keep content hidden until first user interaction to avoid any peek-through
+    let contentShown = false;
+    function showContentIfNeeded() {
+      if (!contentShown) {
+        document.body.classList.remove('no-entrance-ready');
+        contentShown = true;
+      }
+    }
 
     // Input listeners
     document.addEventListener('mousemove', onPointerMove, { passive: false });
